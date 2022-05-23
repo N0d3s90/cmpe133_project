@@ -10,15 +10,16 @@ from django.db.models import Avg
 def home(request):
     query = request.GET.get("title")
     allBooks = None
+    error = None
     if query:
         allBooks = Book.objects.filter(name__icontains=query)
+        
+        if not allBooks:
+            error = "Title not found"
     else:
         allBooks = Book.objects.all()
-    context = {
-        "books": allBooks,
-    }
 
-    return render(request, 'main/index.html', context)
+    return render(request, 'main/index.html', {"books": allBooks, "error": error})
 
 #details
 def detail(request, id):
@@ -55,7 +56,7 @@ def add_books(request):
             return redirect("main:home")
              
     return redirect("accounts:login")
-
+#edit books
 def edit_books(request, id):
     if request.user.is_authenticated:
         if request.user.is_superuser:
@@ -76,7 +77,7 @@ def edit_books(request, id):
             return redirect("main:home")
              
     return redirect("accounts:login")
-
+#delete books
 def delete_books(request, id):
     if request.user.is_authenticated:
         if request.user.is_superuser:
@@ -89,7 +90,7 @@ def delete_books(request, id):
             return redirect("main:home")
              
     return redirect("accounts:login")
-
+#adds reviews
 def add_review(request, id):
     if request.user.is_authenticated:
         book = Book.objects.get(id=id)
@@ -108,7 +109,7 @@ def add_review(request, id):
         return render(request, 'main/details.html', {"form": form})
     else:
         return redirect("accounts:login")
-
+#edits reviews
 def edit_review(request, book_id, review_id):
     if request.user.is_authenticated:
         book = Book.objects.get(id=book_id)
@@ -132,7 +133,7 @@ def edit_review(request, book_id, review_id):
             return redirect("main:detail", book_id)
     else:
         return redirect("accounts:login")
-
+#deletes reviews
 def delete_review(request, book_id, review_id):
     if request.user.is_authenticated:
         book = Book.objects.get(id=book_id)
