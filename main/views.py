@@ -11,11 +11,13 @@ def home(request):
     query = request.GET.get("title")
     allBooks = None
     error = None
+    #seach for book name
     if query:
         allBooks = Book.objects.filter(name__icontains=query)
-        
+        #check if query exists
         if not allBooks:
             error = "Title not found"
+    #return all when empty
     else:
         allBooks = Book.objects.all()
 
@@ -25,7 +27,7 @@ def home(request):
 def detail(request, id):
     book = Book.objects.get(id=id)
     reviews = Review.objects.filter(book=id).order_by("-comment")
-
+    #calculate average
     average = reviews.aggregate(Avg("rating"))["rating__avg"]
     if average == None:
         average = 0
@@ -117,7 +119,7 @@ def edit_review(request, book_id, review_id):
     if request.user.is_authenticated:
         book = Book.objects.get(id=book_id)
         review = Review.objects.get(book=book, id=review_id)
-        
+        #check if the user made the review
         if request.user == review.user:
             if request.method == "POST":
                 form = ReviewForm(request.POST, instance=review)
@@ -141,7 +143,7 @@ def delete_review(request, book_id, review_id):
     if request.user.is_authenticated:
         book = Book.objects.get(id=book_id)
         review = Review.objects.get(book=book, id=review_id)
-        
+        #check if user made the review
         if request.user == review.user:
 
             review.delete()
