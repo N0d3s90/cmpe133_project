@@ -40,6 +40,7 @@ def detail(request, id):
 #add books
 def add_books(request):
     if request.user.is_authenticated:
+        #check if user is admin
         if request.user.is_superuser:
             if request.method == "POST":
                 form = BookForm(request.POST or None)
@@ -59,6 +60,7 @@ def add_books(request):
 #edit books
 def edit_books(request, id):
     if request.user.is_authenticated:
+        #check if user is admin
         if request.user.is_superuser:
             book = Book.objects.get(id=id)
 
@@ -80,6 +82,7 @@ def edit_books(request, id):
 #delete books
 def delete_books(request, id):
     if request.user.is_authenticated:
+        #check if user is admin
         if request.user.is_superuser:
             book = Book.objects.get(id=id)
 
