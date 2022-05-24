@@ -18,6 +18,7 @@ class Book(models.Model):
         return self.name
 
 class Review(models.Model):
+    #fields for review table
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     comment = models.TextField(max_length=5000)
