@@ -41,6 +41,7 @@ def detail(request, id):
     return render(request, 'main/details.html', context)
 #add books
 def add_books(request):
+    #check if user is logged in
     if request.user.is_authenticated:
         #check if user is admin
         if request.user.is_superuser:
@@ -61,6 +62,7 @@ def add_books(request):
     return redirect("accounts:login")
 #edit books
 def edit_books(request, id):
+    #check if user is logged in
     if request.user.is_authenticated:
         #check if user is admin
         if request.user.is_superuser:
@@ -83,6 +85,7 @@ def edit_books(request, id):
     return redirect("accounts:login")
 #delete books
 def delete_books(request, id):
+    #check if user is logged in
     if request.user.is_authenticated:
         #check if user is admin
         if request.user.is_superuser:
@@ -97,6 +100,7 @@ def delete_books(request, id):
     return redirect("accounts:login")
 #adds reviews
 def add_review(request, id):
+    #check if user is logged in
     if request.user.is_authenticated:
         book = Book.objects.get(id=id)
         if request.method == "POST":
@@ -116,6 +120,7 @@ def add_review(request, id):
         return redirect("accounts:login")
 #edits reviews
 def edit_review(request, book_id, review_id):
+    #check if user is logged in
     if request.user.is_authenticated:
         book = Book.objects.get(id=book_id)
         review = Review.objects.get(book=book, id=review_id)
@@ -140,6 +145,7 @@ def edit_review(request, book_id, review_id):
         return redirect("accounts:login")
 #deletes reviews
 def delete_review(request, book_id, review_id):
+    #check if user is logged in
     if request.user.is_authenticated:
         book = Book.objects.get(id=book_id)
         review = Review.objects.get(book=book, id=review_id)
